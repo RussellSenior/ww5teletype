@@ -28,7 +28,9 @@ both transmit and receive occur on the same wire. It appears that the UART is pl
 the so-called "mode 2", which uses a 9-bit message, lsb first, where a one in the ninth bit 
 indicates a corresponding target device (specified by the normal 8 bits) on the bus should 
 listen to the message. Each message is ACK'd with nine bits of zero, presumably by the 
-target device.
+target device. Communication is at 1/64 of the crystal oscillator speed of 12MHz, which 
+works out to 187500 baud (the logic analyzer, a Saleae clone using pulseview of the Sigrok
+project, estimated the baud rate was 187060, which is very close, within 1/4%).
 
 My original plan was to man-in-the-middle this serial bus wire, intercepting the commands 
 coming from the keyboard controller board, decoding them, and sending a corresponding 
