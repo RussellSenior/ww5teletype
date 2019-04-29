@@ -47,8 +47,9 @@ seems like a lot of complex work.
 
 A second alternative, one taken by Stephen Casner for the IBM 1620 Junior project, is to 
 intercept key presses directly from the FFC cables coming from the keyboard itself, and decode
-those. The corresponding ASCII characters can be sent to the remote computer and a fake
-keyboard can be presented to the keyboard controller board.
+the matrix. The corresponding ASCII characters can be sent to the remote computer and a fake
+keyboard can be presented to the keyboard controller board.  I need to learn more about how
+the keyboard matrix works.
 
 One desirable feature is the ability to return to a "local" (vs "line") mode, where normal
 typewriter functionality is restored, either through software or perhaps a hardware switch.
