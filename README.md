@@ -54,8 +54,7 @@ the keyboard matrix works.
 One desirable feature is the ability to return to a "local" (vs "line") mode, where normal
 typewriter functionality is restored, either through software or perhaps a hardware switch.
 
-Thanks to the able assistance of [Jared Boone][https://github.com/jboone] of [ShareBrained Technology]
-[https://www.sharebrained.com/], of Chronulator and 
+Thanks to the able assistance of [Jared Boone](https://github.com/jboone) of [ShareBrained Technology](https://www.sharebrained.com/), of Chronulator and 
 PortaPack fame, I was able to obtain dumps of the off-chip ROMs for the keyboard controller 
 and printer option boards (there are some other ROMs, but they seem less important).  They
 can be found in the rom subdirectory. The motor control ROM would also be interesting, but
