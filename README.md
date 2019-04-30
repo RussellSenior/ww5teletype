@@ -2,7 +2,7 @@ Exploration of the IBM Wheelwriter 5
 
 This is a project motivated by a desire to create a daisywheel teletype, to give a 
 similar experience to that of a Model 33ASR teletype, but with upper and lowercase 
-characters. Thanks to Hugh Pyle and his fantastic twitch.tv/33asr channel for the 
+characters. Thanks to Hugh Pyle and his fantastic [Twitch channel](https://www.twitch.tv/33asr) for the 
 inspiration.  Thanks also to Chris Gregg and his project:
 https://github.com/tofergregg/IBM-Wheelwriter-Hack and to this very similar project 
 by Stephen Casner: https://github.com/IBM-1620/Junior.
