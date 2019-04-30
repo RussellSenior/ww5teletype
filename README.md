@@ -54,10 +54,12 @@ the keyboard matrix works.
 One desirable feature is the ability to return to a "local" (vs "line") mode, where normal
 typewriter functionality is restored, either through software or perhaps a hardware switch.
 
-Thanks to the able assistance of Jared Boone of ShareBrained Technology, of Chronulator and 
-PortaPak fame, I was able to obtain dumps of the off-chip ROMs for the keyboard controller 
+Thanks to the able assistance of [Jared Boone][https://github.com/jboone] of [ShareBrained Technology]
+[https://www.sharebrained.com/], of Chronulator and 
+PortaPack fame, I was able to obtain dumps of the off-chip ROMs for the keyboard controller 
 and printer option boards (there are some other ROMs, but they seem less important).  They
-can be found in the rom subdirectory.
+can be found in the rom subdirectory. The motor control ROM would also be interesting, but
+they are more obfuscated than even the keyboard controller board.
 
 One oddity found in the disassembled firmware so far, it's not clear where the UART is 
 configured in the keyboard controller firmware. I see references to the control register 
@@ -66,7 +68,7 @@ SCON in the printer board firmware, but not in the keyboard controller. Setting 
 
 This particular project may go on the back burner, however, due to the acquisition of two 
 almost functional DEC LQP02 wheelwriting printers. These have some advantages, including the 
-availability of a native RS-232 interface and full ASCII character set wheels. They IBM wheels 
+availability of a native RS-232 interface and full ASCII character set wheels. The IBM wheels 
 are missing some useful characters, including tilde, pipe, and caret.
 
 The current plan is to attach a ps2 keyboard, decode keyboard events using the nice teensy
@@ -78,9 +80,3 @@ The current obstacle with the LQP02 is that the carriage belts (I think they wer
 belts) had substantially rotted, so I'm currently waiting for some replacement belts to 
 effect repairs. At that point, I'll be able to tell whether the printers are otherwise
 functional and whether the approach is viable.
-
-
-
-. hh
-
-
