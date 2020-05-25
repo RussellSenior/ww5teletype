@@ -64,18 +64,3 @@ One oddity found in the disassembled firmware so far, it's not clear where the U
 configured in the keyboard controller firmware. I see references to the control register 
 SCON in the printer board firmware, but not in the keyboard controller. Setting up the 
 9-bit serial mode must require twiddling that register, so wtf? 
-
-This particular project may go on the back burner, however, due to the acquisition of two 
-almost functional DEC LQP02 wheelwriting printers. These have some advantages, including the 
-availability of a native RS-232 interface and full ASCII character set wheels. The IBM wheels 
-are missing some useful characters, including tilde, pipe, and caret.
-
-The current plan is to attach a ps2 keyboard, decode keyboard events using the nice teensy
-library, send them over serial to the remote computer, etc. The DEC printers are serial
-devices, so it may be possible to simply connect the remote computer's TX pin to the RX pin
-of the printer and be done.
-
-The current obstacle with the LQP02 is that the carriage belts (I think they were MXL timing
-belts) had substantially rotted, so I'm currently waiting for some replacement belts to 
-effect repairs. At that point, I'll be able to tell whether the printers are otherwise
-functional and whether the approach is viable.
