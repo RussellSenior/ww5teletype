@@ -1,0 +1,91 @@
+Bus Protocol:
+
+[Ignoring for the moment the very complex activity when the PC Printer
+option is attached, sticking only to what can be observed while
+interacting at the keyboard.]
+
+The protocol uses a 9-bit serial protocol at 187050 baud with transmit
+and receive appearing on the same wire. The transmitting device pulls
+the bus to ground to indicate a zero or allows to pulled high to
+indicate a one. Each byte is acknowledged, usually with zeros, but
+sometimes with a reply value.
+
+A command sequence begins by transmitting 0x121 to put the receiver at
+address 0x21 on notice that the command is for it. Other receivers are
+allowed to ignore the rest of the message. The reply is uniformily
+zero, but the command initiator needs to wait for the reply before
+proceeding. The command initiator then sends a command code (0x00
+through 0x0e). Each command has a fixed number of argument btyes that
+follow, which vary by command.
+
+cmd 0x00 (no args)  : Model number query
+    	     	      Reply: 0x06 = Wheelwriter 3
+			     0x25 = Wheelwriter 5
+		             0x26 = Wheelwriter 6
+
+cmd 0x01 (no args) :  Reset and printwheel identification
+    	     	      Reply: 0x10 = Courier 15 (1353796)
+		     	     0x20 = Prestige Elite 12 (1353502)
+	 		     0x10 = Gothic 15 (1353719)
+
+cmd 0x02 ??
+
+cmd 0x03 (two args) : Print a character with normal ribbon
+    	      	      arg1: printwheel rotation, 0x00 to 0x60
+		      arg2: microsteps (1/120 inch) to advance
+
+cmd 0x04 (two args) : Print a character with rubout ribbon
+    	      	      (same as 0x03)
+
+cmd 0x05 (one arg)  : Platen motion
+    	      	      bit7 = direction: 0=paperdown; 1=paperup
+		      bits0-6 = microsteps (1/96th inch)
+
+cmd 0x06 (two args) : Carriage motion
+    	      	      arg1,bit7 = direction: 0=carriageleft; 1=carriageright
+		      arg1,bits0=6 and arg2 = microsteps (1/120th inch)
+		      
+cmd 0x07 (no args)  : ?? spins printwheel
+    	     	      Returns zero
+
+cmd 0x08 (no args)  : Request pitch of printwheel
+    	     	      Reply: 0x08 = proportional spaced
+		      	     0x10 = 15cpi
+			     0x20 = 12cpi
+			     0x40 = 10cpi
+			     0x21 = no printwheel
+
+cmd 0x09 (one arg)  : Request feature (bitwise)
+    	      	      arg1: 0x00 = normal
+			    0x01 (bit 0) = heavy impact
+		      	    0x04 (bit 2) = underlining on
+			    0x08 (bit 3) = autorepeat on
+
+cmd 0x0a (one arg)  : Language selection
+    	      	      arg1: 0x00 = language option off
+		      	    0x23 = language option on
+
+cmd 0x0b (no args)  : Some kind of status check
+    	     	      Reply bit 2: after tab or carriage motion
+		      	    bit 4: after platen motion
+			    bit 6: ??
+
+cmd 0x0c (one arg)  : ??
+    	      	      arg1 = 0x01 (seen after a carriage return)
+		      	     0x10 (??)
+		      	     0x81 (seen after underlining)
+			     0x90 (seen after rubout)
+
+cmd 0x0d (one arg)  : precedes other commands
+    	      	      arg1 = 0x04 (backspace)
+		      	     0x05 (rubout)
+		      	     0x07 (carriage return)
+			     0x0a (tab)
+			     0x12 (tab set)
+
+cmd 0x0e (one arg)  : related to code key
+    	      	      arg1 = 0xe7 (code key is pressed)
+
+		      followed by a 0x0b (zero return) when pressed or released
+		     
+			     
