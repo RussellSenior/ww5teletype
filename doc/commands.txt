@@ -52,36 +52,102 @@ cmd 0x08 (no args)  : Request pitch of printwheel
     	     	      Reply: 0x08 = proportional spaced
 		      	     0x10 = 15cpi
 			     0x20 = 12cpi
-			     0x40 = 10cpi
 			     0x21 = no printwheel
+			     0x40 = 10cpi
 
 cmd 0x09 (one arg)  : Request feature (bitwise)
     	      	      arg1: 0x00 = normal
-			    0x01 (bit 0) = heavy impact
+			    0x01 (bit 0) = impression control
+			    0x02 (bit 1) = ?
 		      	    0x04 (bit 2) = underlining on
 			    0x08 (bit 3) = autorepeat on
+			    0x10 (bit 4) = ?
+			    0x20 (bit 5) = playback
+			    0x40 (bit 6) = decimal tab alignment
+			    0x80 (bit 7) = ?
 
-cmd 0x0a (one arg)  : Language selection
-    	      	      arg1: 0x00 = language option off
-		      	    0x23 = language option on
+cmd 0x0a (one arg)  : Language keyboard selection
+		      arg1: 0x00 = us english/australia/new zealand (1)
+			    0x01 = latin america, spanish (25)
+			    0x02 = austria/west germany (29)
+			    0x03 = argentina keyboard (35)
+			    0x04 = canada, english (37)
+			    0x05 = canada, bilingual (39)
+			    0x06 = italy (41)
+			    0x07 = netherlands (43)
+			    0x08 = spain (70)
+			    0x09 = switzerland, french (49)/german (51)
+			    0x0a = library (111)
+			    0x0b = finland/sweden (53)
+			    0x0c = norway (55)
+			    0x0d = denmark (59)
+			    0x0e = trilingual (113)
+			    0x0f = portugal (63)
+			    0x10 = uk (67)
+			    0x11 = japan, english (69)
+			    0x12 = greece, greek (219)
+			    0x13 = greece, latin (207)
+			    0x14 = iceland (97)
+			    0x15 = turkey (79)
+			    0x16 = south africa (81)
+			    0x17 = czech (83)
+			    0x18 = slovak (85)
+			    0x19 = romania (217)
+			    0x1a = hungary (109)
+			    0x1b = poland (213)
+			    0x1c = yugoslavia, latin (233)
+			    0x1d = hong kong (119)
+			    0x1e = japan, katakana (221)
+			    0x1f = bulgaria (227)
+			    0x20 = yugoslavia, cyrillic (225)
+			    0x21 = ussr (231)
+			    0x22 = france/belgium (251)
+			    0x23 = latin supplemental (99)
+			    0x24 = east germany (34)
 
 cmd 0x0b (no args)  : Some kind of status check
-    	     	      Reply bit 2: after tab or carriage motion
-		      	    bit 4: after platen motion
-			    bit 6: ??
+		      Reply 0x00
+			    0x01 (bit 0) = ?
+			    0x02 (bit 1) = ?
+		            0x04 (bit 2) = after tab or carriage motion
+			    0x08 (bit 3) = ?
+			    0x10 (bit 4) = after platen motion
+			    0x20 (bit 5) = ?
+			    0x40 (bit 6) = optical sensor interrupted
+					   printwheel change or
+					   left carriage interrupt switch
+			    0x80 (bit 7) = ?
 
 cmd 0x0c (one arg)  : ??
     	      	      arg1 = 0x01 (seen after a carriage return)
+		             0x04 (super/subscript)
 		      	     0x10 (??)
-		      	     0x81 (seen after underlining)
+			     0x20 (revert super/subscript)
+			     0x40 (after dec-tab playback)
+			     0x81 (seen after underlining and dec-tab)
 			     0x90 (seen after rubout)
 
 cmd 0x0d (one arg)  : precedes other commands
     	      	      arg1 = 0x04 (backspace)
 		      	     0x05 (rubout)
+			     0x06 (pre-DecT numeric playback)
 		      	     0x07 (carriage return)
 			     0x0a (tab)
+			     0x0f (store)
+			     0x11 (carriage return?)
 			     0x12 (tab set)
+			     0x40 + cached numeric characters in
+				  decimal tabs:
+				  0x2e = 1
+				  0x2f = 2
+				  0x2c = 3
+				  0x32 = 4
+				  0x31 = 5
+				  0x33 = 6
+				  0x35 = 7
+				  0x34 = 8
+				  0x2a = 9
+				  0x30 = 0
 
 cmd 0x0e (one arg)  : related to code key
     	      	      arg1 = 0xe7 (code key is pressed)
