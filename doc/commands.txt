@@ -28,7 +28,7 @@ cmd 0x01 (no args) :  Reset and printwheel identification
 		     	     0x20 = Prestige Elite 12 (1353502)
 	 		     0x10 = Gothic 15 (1353719)
 
-cmd 0x02 ??
+cmd 0x02 (two args) : (same as 0x03 below, except arg2 is ignored)
 
 cmd 0x03 (two args) : Print a character with normal ribbon
     	      	      arg1: printwheel rotation, 0x00 to 0x60
@@ -58,7 +58,7 @@ cmd 0x08 (no args)  : Request pitch of printwheel
 cmd 0x09 (one arg)  : Request feature (bitwise)
     	      	      arg1: 0x00 = normal
 			    0x01 (bit 0) = impression control
-			    0x02 (bit 1) = ?
+			    0x02 (bit 1) = half-character shift right before strike
 		      	    0x04 (bit 2) = underlining on
 			    0x08 (bit 3) = autorepeat on
 			    0x10 (bit 4) = ?
