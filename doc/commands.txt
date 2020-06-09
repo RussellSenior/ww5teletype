@@ -24,9 +24,10 @@ cmd 0x00 (no args)  : Model number query
 		             0x26 = Wheelwriter 6
 
 cmd 0x01 (no args) :  Reset and printwheel identification
-    	     	      Reply: 0x10 = Courier 15 (1353796)
-		     	     0x20 = Prestige Elite 12 (1353502)
-	 		     0x10 = Gothic 15 (1353719)
+    	     	      Reply: 0x10 Courier 15 (1353796)
+		     	     0x20 Prestige Elite 12 (1353502)
+	 		     0x10 Gothic 15 (1353719)
+			     0x40 Courier 10 DP PC (1353909) 
 
 cmd 0x02 (two args) : (same as 0x03 below, except arg2 is ignored)
 
@@ -153,5 +154,3 @@ cmd 0x0e (one arg)  : related to code key
     	      	      arg1 = 0xe7 (code key is pressed)
 
 		      followed by a 0x0b (zero return) when pressed or released
-		     
-			     
