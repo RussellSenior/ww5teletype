@@ -1,14 +1,12 @@
 Bus Protocol:
 
-[Ignoring for the moment the very complex activity when the PC Printer
-option is attached, sticking only to what can be observed while
-interacting at the keyboard.]
-
 The protocol uses a 9-bit serial protocol at 187050 baud with transmit
 and receive appearing on the same wire. The transmitting device pulls
 the bus to ground to indicate a zero or allows to pulled high to
 indicate a one. Each byte is acknowledged, usually with zeros, but
 sometimes with a reply value.
+
+Normal typewriter operation:
 
 A command sequence begins by transmitting 0x121 to put the receiver at
 address 0x21 on notice that the command is for it. Other receivers are
@@ -154,3 +152,52 @@ cmd 0x0e (one arg)  : related to code key
     	      	      arg1 = 0xe7 (code key is pressed)
 
 		      followed by a 0x0b (zero return) when pressed or released
+
+When the PC Printer option card is connected, the command processes
+are more complex. It seems to work something like this:
+
+0x140: function board gives bus to option board
+0x110: option board gives bus to function board
+0x114: message from option board to function board
+0x124: message from option board to printer board
+0x141: message from function board to option board
+0x121: message from function board to printer board
+
+0x1.1: message from function board
+0x1.4: message from option board
+0x11.: message to function board
+0x12.: message to printer board
+0x14.: message to option board
+
+When the option card wants to talk on the bus, it pulls BRQ low. When
+the bus is available, the function card sends a 0x140 on the bus,
+handing the token to the option card. As soon as the 0x140 is
+received, BRQ is released. The option card then sends its commands and
+when it is finished it sends 0x110, handing back control of the bus to
+the function card.
+
+The way characters get from the option card to paper goes something
+like this:
+
+ * the option card gets the bus token
+
+ * the option card sends a 0x114 (option-to-function) command 0x03 with
+   one argument (basically a key code). There are at least two special
+   keycodes (0x5f for shift and 0xdf for unshift). The unspecial key
+   codes are sent in pairs, first with 0x80 bit clear and then with
+   that bit set. This is probably to indicate key press/release.
+
+ * the function card sends a 0x141 (function-to-option) command
+   sequence, basically telling the option card how to phrase that to
+   the printer card;
+
+ * the option card then sends a 0x124 (option-to-printer) command
+   sequence that the function card just told it how to say.
+
+ * sprinkled liberally around when the function card get the bus back
+   are 0x141 (function-to-option) commands 0x83 to which the reply is
+   always 0x01. I assume this is some kind of status check.
+
+ * there are occasional 0x114 (option-to-function) command 0x05
+   sequences sent with one argument. I don't know what those
+   indicate. Perhaps a "get ready" and "i'm done now" thing.
