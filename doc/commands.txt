@@ -44,7 +44,7 @@ cmd 0x06 (two args) : Carriage motion
     	      	      arg1,bit7 = direction: 0=carriageleft; 1=carriageright
 		      arg1,bits0=6 and arg2 = microsteps (1/120th inch)
 		      
-cmd 0x07 (no args)  : ?? spins printwheel
+cmd 0x07 (no args)  : Spins printwheel (apparently intended to get the operators attention)
     	     	      Returns zero
 
 cmd 0x08 (no args)  : Request pitch of printwheel
@@ -108,9 +108,9 @@ cmd 0x0b (no args)  : Some kind of status check
 		      Reply 0x00
 			    0x01 (bit 0) = ?
 			    0x02 (bit 1) = ?
-		            0x04 (bit 2) = after tab or carriage motion
+		            0x04 (bit 2) = carriage is moving
 			    0x08 (bit 3) = ?
-			    0x10 (bit 4) = after platen motion
+			    0x10 (bit 4) = platen is moving
 			    0x20 (bit 5) = ?
 			    0x40 (bit 6) = optical sensor interrupted
 					   printwheel change or
