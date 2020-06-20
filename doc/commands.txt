@@ -151,9 +151,82 @@ cmd 0x0d (one arg)  : precedes other commands
 cmd 0x0e (one arg)  : related to code key
     	      	      arg1 = 0xe7 (code key is pressed)
 
+		      0x80    `       0x00
+		      0x81    1       0x01
+		      0x82    q       0x02
+		      0x84    a       0x04
+		      0x86    z       0x06
+		      0x89    2       0x09
+		      0x8a    w       0x0a
+		      0x8c    s       0x0c
+		      0x8e    x       0x0e
+		      0x91    3       0x11
+		      0x92    e       0x12
+		      0x94    d       0x14
+		      0x96    c       0x16
+		      0x98    5       0x18
+		      0x99    4       0x19
+		      0x9a    r       0x1a
+		      0x9b    t       0x1b
+		      0x9c    f       0x1c
+		      0x9d    g       0x1d
+		      0x9e    v       0x1e
+		      0x9f    b       0x1f
+		      0xa0    6       0x20
+		      0xa1    7       0x21
+		      0xa2    u       0x22
+		      0xa3    y       0x23
+		      0xa4    j       0x24
+		      0xa5    h       0x25
+		      0xa6    m       0x26
+		      0xa7    n       0x27
+		      0xa9    8       0x29
+		      0xaa    i       0x2a
+		      0xab    ]       0x2b
+		      0xac    k       0x2c
+		      0xae    ,       0x2e
+		      0xb1    9       0x31
+		      0xb2    o       0x32
+		      0xb4    l       0x34
+		      0xb6    .       0x36
+		      0xb8    -       0x38
+		      0xb9    0       0x39
+		      0xba    p       0x3a
+		      0xbb    1/2     0x3b
+		      0xbc    ;       0x3c
+		      0xbd    '       0x3d
+		      0xbf    /       0x3f
+		      0xc0    DecT    0x40
+		      0xc1    Store   0x41
+		      0xc2    LMar    0x42
+		      0xc3    Play    0x43
+		      0xc4    Del     0x44
+		      0xc5    TClr    0x45
+		      0xc6    MicroDown       0x46
+		      0xc7    Space   0x47
+		      0xc8    MarRel  0x48
+		      0xc9    ??      0x49
+		      0xca    Tab     0x4a
+		      0xcb    RMar    0x4b
+		      0xcc    TSet    0x4c
+		      0xcd    Reloc   0x4d
+		      0xce    Lock    0x4e
+		      0xcf    Rubout  0x4f
+		      0xd0    backspace       0x50
+		      0xd1    PaperUp 0x51
+		      0xd2    PaperDown       0x52
+		      0xd4    MicroUp 0x54
+		      0xd6    CRtn    0x56
+		      0xd7    LineSpace       0x57
+		      0xdf    Shift   0x5f
+		      0xdf    Shift   0x5f
+		      0xe7    Code    0x67
+
 		      followed by a 0x0b (zero return) when pressed or released
 
-When the PC Printer option card is connected, the command processes
+
+
+When the PC Printer option board is connected, the command processes
 are more complex. It seems to work something like this:
 
 0x140: function board gives bus to option board
@@ -169,32 +242,31 @@ are more complex. It seems to work something like this:
 0x12.: message to printer board
 0x14.: message to option board
 
-When the option card wants to talk on the bus, it pulls BRQ low. When
-the bus is available, the function card sends a 0x140 on the bus,
-handing the token to the option card. As soon as the 0x140 is
-received, BRQ is released. The option card then sends its commands and
+When the option board wants to talk on the bus, it pulls BRQ low. When
+the bus is available, the function board sends a 0x140 on the bus,
+handing the token to the option board. As soon as the 0x140 is
+received, BRQ is released. The option board then sends its commands and
 when it is finished it sends 0x110, handing back control of the bus to
-the function card.
+the function board.
 
-The way characters get from the option card to paper goes something
+The way characters get from the option board to paper goes something
 like this:
 
- * the option card gets the bus token
+ * the option board gets the bus token
 
- * the option card sends a 0x114 (option-to-function) command 0x03 with
-   one argument (basically a key code). There are at least two special
-   keycodes (0x5f for shift and 0xdf for unshift). The unspecial key
-   codes are sent in pairs, first with 0x80 bit clear and then with
-   that bit set. This is probably to indicate key press/release.
+ * the option board sends a 0x114 (option-to-function) command 0x03 with
+   one argument, a code representing a pseudo keyboard event, press and
+   release. See command 0x0e key codes above. The high bit is zero for press
+   and 1 for release;
 
- * the function card sends a 0x141 (function-to-option) command
-   sequence, basically telling the option card how to phrase that to
-   the printer card;
+ * the function board sends a 0x141 (function-to-option) command
+   sequence, basically telling the option board how to phrase that to
+   the printer board;
 
- * the option card then sends a 0x124 (option-to-printer) command
-   sequence that the function card just told it how to say.
+ * the option board then sends a 0x124 (option-to-printer) command
+   sequence that the function board just told it how to say.
 
- * sprinkled liberally around when the function card get the bus back
+ * sprinkled liberally around when the function board gets the bus back
    are 0x141 (function-to-option) commands 0x83 to which the reply is
    always 0x01. I assume this is some kind of status check.
 
@@ -213,9 +285,13 @@ Other 0x114 0x03 commands:
 
 0x114 0x05 commands:
 
+Not sure what this represents, but I do notice that bit 3 is
+0 at the beginning and 1 at the end.
+
  0x114 0x00 0x05 0x00 0x01 0x00
  0x114 0x00 0x05 0x00 0x02 0x00
  0x114 0x00 0x05 0x00 0x06 0x00
+ 0x114 0x00 0x05 0x00 0x0a 0x00
  0x114 0x00 0x05 0x00 0x0e 0x00
 
 0x114 0x0f commands:
@@ -225,18 +301,20 @@ Other 0x114 0x03 commands:
 
 0x141 0x82 commands:
 
-These occur in bracketing pairs (note the high bit is set or not). They
-are the function board sending a message to the option board and the option
-board responding with 0x01.
+These occur when the option board is online, but the function board
+has read a code-key modified keyboard event that it wants to let the
+option board know about (e.g. to take the option board offline). The
+one arg is the key code (see command 0x0e above for a full list) press
+and release.
 
- 0x141 0x00 0x82 0x00 0x18 0x01
- 0x141 0x00 0x82 0x00 0x20 0x01
- 0x141 0x00 0x82 0x00 0x51 0x01
- 0x141 0x00 0x82 0x00 0x67 0x01
- 0x141 0x00 0x82 0x00 0x98 0x01
- 0x141 0x00 0x82 0x00 0xa0 0x01
- 0x141 0x00 0x82 0x00 0xd1 0x01
- 0x141 0x00 0x82 0x00 0xe7 0x01
+ 0x141 0x00 0x82 0x00 0x18 0x01 -- 5 key pressed (toggle printer on/off)
+ 0x141 0x00 0x82 0x00 0x20 0x01 -- 6 key pressed (toggle online)
+ 0x141 0x00 0x82 0x00 0x51 0x01 -- PaperUp key pressed
+ 0x141 0x00 0x82 0x00 0x67 0x01 -- code key pressed
+ 0x141 0x00 0x82 0x00 0x98 0x01 -- 5 key released
+ 0x141 0x00 0x82 0x00 0xa0 0x01 -- 6 key released
+ 0x141 0x00 0x82 0x00 0xd1 0x01 -- PaperUp key released
+ 0x141 0x00 0x82 0x00 0xe7 0x01 -- code key released
 
 0x141 0x83 command:
 
